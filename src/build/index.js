@@ -244,7 +244,7 @@ var Dispatcher = (function () {
 
 module.exports = Dispatcher;
 }).call(this,require('_process'))
-},{"_process":12,"fbjs/lib/invariant":3}],3:[function(require,module,exports){
+},{"_process":13,"fbjs/lib/invariant":3}],3:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -296,7 +296,7 @@ var invariant = function (condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":12}],4:[function(require,module,exports){
+},{"_process":13}],4:[function(require,module,exports){
 'use strict';
 
 var QuizDispatcher = require('../dispatchers/QuizDispatcher');
@@ -312,10 +312,11 @@ module.exports = {
 	}
 };
 
-},{"../constants/QuizConstants":7,"../dispatchers/QuizDispatcher":8}],5:[function(require,module,exports){
+},{"../constants/QuizConstants":8,"../dispatchers/QuizDispatcher":9}],5:[function(require,module,exports){
 'use strict';
 
 var Quiz = require('./Quiz.jsx');
+var Cabecera = require('./Cabecera.jsx');
 
 var QuizActions = require('../actions/QuizActions');
 var QuizStore = require('../stores/QuizStores');
@@ -347,17 +348,12 @@ var App = React.createClass({
 
 		var valueQuestion = QuizStore.getStateQuestion();
 		var valueAnswer = QuizStore.getStateAnswer();
+		var numQuizes = QuizStore.getNumberOfQuizes();
 
 		return React.createElement(
 			'div',
 			null,
-			React.createElement(
-				'label',
-				null,
-				' Numero de preguntas realizadas: ',
-				this.state.numQuizes,
-				' '
-			),
+			React.createElement(Cabecera, { numQuizes: numQuizes }),
 			React.createElement(Quiz, { valueQuestion: valueQuestion, valueAnswer: valueAnswer })
 		);
 	}
@@ -365,7 +361,26 @@ var App = React.createClass({
 
 module.exports = App;
 
-},{"../actions/QuizActions":4,"../stores/QuizStores":10,"./Quiz.jsx":6}],6:[function(require,module,exports){
+},{"../actions/QuizActions":4,"../stores/QuizStores":11,"./Cabecera.jsx":6,"./Quiz.jsx":7}],6:[function(require,module,exports){
+"use strict";
+
+var Cabecera = React.createClass({
+	displayName: "Cabecera",
+
+	render: function render() {
+		return React.createElement(
+			"label",
+			null,
+			" Numero de preguntas realizadas: ",
+			this.props.numQuizes,
+			" "
+		);
+	}
+});
+
+module.exports = Cabecera;
+
+},{}],7:[function(require,module,exports){
 "use strict";
 
 var QuizActions = require('../actions/QuizActions');
@@ -409,7 +424,7 @@ var Quiz = React.createClass({
 
 module.exports = Quiz;
 
-},{"../actions/QuizActions":4}],7:[function(require,module,exports){
+},{"../actions/QuizActions":4}],8:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -419,21 +434,21 @@ module.exports = {
 	CHANGE_EVENT: 'CHANGE_EVENT'
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Dispatcher = require('flux').Dispatcher;
 
 module.exports = new Dispatcher();
 
-},{"flux":1}],9:[function(require,module,exports){
+},{"flux":1}],10:[function(require,module,exports){
 "use strict";
 
 var App = require("./components/App.jsx");
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('contenedor'));
 
-},{"./components/App.jsx":5}],10:[function(require,module,exports){
+},{"./components/App.jsx":5}],11:[function(require,module,exports){
 'use strict';
 
 var EventEmitter = require('events').EventEmitter;
@@ -493,7 +508,7 @@ QuizDispatcher.register(function (payload) {
 
 module.exports = QuizStore;
 
-},{"../constants/QuizConstants":7,"../dispatchers/QuizDispatcher":8,"events":11}],11:[function(require,module,exports){
+},{"../constants/QuizConstants":8,"../dispatchers/QuizDispatcher":9,"events":12}],12:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -793,7 +808,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -886,4 +901,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[9]);
+},{}]},{},[10]);

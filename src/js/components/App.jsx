@@ -1,4 +1,5 @@
 const Quiz = require('./Quiz.jsx');
+const Cabecera = require('./Cabecera.jsx');
 
 var QuizActions = require('../actions/QuizActions');
 var QuizStore = require('../stores/QuizStores');
@@ -30,10 +31,11 @@ var App = React.createClass({
 
 		var valueQuestion = QuizStore.getStateQuestion();
 		var valueAnswer = QuizStore.getStateAnswer();
+		var numQuizes = QuizStore.getNumberOfQuizes();
 
 		return (
 			<div>
-				<label> Numero de preguntas realizadas: {this.state.numQuizes} </label>
+				<Cabecera numQuizes={numQuizes} />
 				<Quiz valueQuestion={valueQuestion} valueAnswer={valueAnswer} />
 			</div>
 		)
