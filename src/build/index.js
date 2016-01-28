@@ -320,36 +320,45 @@ var Quiz = require('./Quiz.jsx');
 var QuizActions = require('../actions/QuizActions');
 var QuizStore = require('../stores/QuizStores');
 
-/*
 function getAppStateFromStore() {
 	return {
-
+		numQuizes: QuizStore.getNumberOfQuizes(),
+		valueQuestion: QuizStore.getStateQuestion(),
+		valueAnswer: QuizStore.getStateAnswer()
 	};
 }
-*/
+
 var App = React.createClass({
 	displayName: 'App',
 
-	/*
- getInitialState: function(){
- 	return getAppStateFromStore();
- },
- componentDidMount() {
- 	QuizStore.addChangeListener(this._onChange);
- },
- componentWillUnmount() {
- 	QuizStore.removeChangeListener(this._onChange);
- },
- _onChange: function() {
- 	this.setState(getAppStateFromStore());
- },
- */
+	getInitialState: function getInitialState() {
+		return getAppStateFromStore();
+	},
+	componentDidMount: function componentDidMount() {
+		QuizStore.addChangeListener(this._onChange);
+	},
+	componentWillUnmount: function componentWillUnmount() {
+		QuizStore.removeChangeListener(this._onChange);
+	},
+	_onChange: function _onChange() {
+		this.setState(getAppStateFromStore());
+	},
 	render: function render() {
+
+		var valueQuestion = QuizStore.getStateQuestion();
+		var valueAnswer = QuizStore.getStateAnswer();
 
 		return React.createElement(
 			'div',
 			null,
-			React.createElement(Quiz, null)
+			React.createElement(
+				'label',
+				null,
+				' Numero de preguntas realizadas: ',
+				this.state.numQuizes,
+				' '
+			),
+			React.createElement(Quiz, { valueQuestion: this.state.valueQuestion, valueAnswer: this.state.valueAnswer })
 		);
 	}
 });
@@ -365,7 +374,6 @@ var Quiz = React.createClass({
 	displayName: "Quiz",
 
 	addQuestionClick: function addQuestionClick() {
-		console.log(this.questionInput.value);
 		QuizActions.add_Quiz(this.questionInput.value, this.answerInput.value);
 	},
 	render: function render() {
@@ -379,7 +387,7 @@ var Quiz = React.createClass({
 				null,
 				" Pregunta: "
 			),
-			React.createElement("input", { id: "pregunta", placeholder: "Pregunta", ref: function (ref) {
+			React.createElement("input", { id: "pregunta", placeholder: "Pregunta", value: this.state.valueQuestion, ref: function (ref) {
 					return _this.questionInput = ref;
 				} }),
 			React.createElement(
@@ -387,7 +395,7 @@ var Quiz = React.createClass({
 				null,
 				" Respuesta: "
 			),
-			React.createElement("input", { id: "answer", placeholder: "Respuesta", ref: function (ref) {
+			React.createElement("input", { id: "answer", placeholder: "Respuesta", value: this.state.valueAnswer, ref: function (ref) {
 					return _this.answerInput = ref;
 				} }),
 			React.createElement(
@@ -433,13 +441,20 @@ var EventEmitter = require('events').EventEmitter;
 var QuizDispatcher = require('../dispatchers/QuizDispatcher');
 var Constants = require('../constants/QuizConstants');
 
+var valueQuestion = "";
+var valueAnswer = "";
+var numberOfQuizes = 0;
+
 var QuizStore = Object.assign({}, EventEmitter.prototype, {
 
-	getQuestion: function getQuestion() {
-		return question;
+	getStateQuestion: function getStateQuestion() {
+		return valueQuestion;
 	},
-	getAnswer: function getAnswer() {
-		return answer;
+	getStateAnswer: function getStateAnswer() {
+		return valueAnswer;
+	},
+	getNumberOfQuizes: function getNumberOfQuizes() {
+		return numberOfQuizes;
 	},
 	addChangeListener: function addChangeListener(callback) {
 		this.on(Constants.CHANGE_EVENT, callback);
@@ -454,15 +469,22 @@ var QuizStore = Object.assign({}, EventEmitter.prototype, {
 
 QuizDispatcher.register(function (payload) {
 
-	console.log("PAYLOAD:");
-	console.log(payload);
-
 	switch (payload.type) {
 
 		case Constants.ActionTypes.ADD_QUIZ:
 
 			console.log("PREGUNTA:");
 			console.log(payload.question);
+
+			console.log("RESPUESTA:");
+			console.log(payload.answer);
+
+			// Entre medias tenemos que poner estos valores en una tabla...
+
+			// Actualizamos el numero de preguntas y reseteamos los inputs.
+			numberOfQuizes = numberOfQuizes + 1;
+			valueQuestion = "";
+			valueAnswer = "";
 
 			QuizStore.emitChange();
 			break;

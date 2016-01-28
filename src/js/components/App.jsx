@@ -3,15 +3,17 @@ const Quiz = require('./Quiz.jsx');
 var QuizActions = require('../actions/QuizActions');
 var QuizStore = require('../stores/QuizStores');
 
-/*
+
 function getAppStateFromStore() {
 	return {
-
+		numQuizes: 		QuizStore.getNumberOfQuizes(),
+		valueQuestion: 	QuizStore.getStateQuestion(),
+		valueAnswer: 	QuizStore.getStateAnswer()		
 	};
 }
-*/
+
+
 var App = React.createClass({
-	/*
 	getInitialState: function(){
 		return getAppStateFromStore();
 	},
@@ -24,12 +26,15 @@ var App = React.createClass({
 	_onChange: function() {
 		this.setState(getAppStateFromStore());
 	},
-	*/
 	render: function(){
+
+		var valueQuestion = QuizStore.getStateQuestion();
+		var valueAnswer = QuizStore.getStateAnswer();
 
 		return (
 			<div>
-				<Quiz />
+				<label> Numero de preguntas realizadas: {this.state.numQuizes} </label>
+				<Quiz valueQuestion={this.state.valueQuestion} valueAnswer={this.state.valueAnswer} />
 			</div>
 		)
 	}
