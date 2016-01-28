@@ -34,7 +34,7 @@ var App = React.createClass({
 		return (
 			<div>
 				<label> Numero de preguntas realizadas: {this.state.numQuizes} </label>
-				<Quiz valueQuestion={this.state.valueQuestion} valueAnswer={this.state.valueAnswer} />
+				<Quiz valueQuestion={valueQuestion} valueAnswer={valueAnswer} />
 			</div>
 		)
 	}

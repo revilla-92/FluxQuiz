@@ -358,7 +358,7 @@ var App = React.createClass({
 				this.state.numQuizes,
 				' '
 			),
-			React.createElement(Quiz, { valueQuestion: this.state.valueQuestion, valueAnswer: this.state.valueAnswer })
+			React.createElement(Quiz, { valueQuestion: valueQuestion, valueAnswer: valueAnswer })
 		);
 	}
 });
@@ -387,7 +387,7 @@ var Quiz = React.createClass({
 				null,
 				" Pregunta: "
 			),
-			React.createElement("input", { id: "pregunta", placeholder: "Pregunta", value: this.state.valueQuestion, ref: function (ref) {
+			React.createElement("input", { id: "pregunta", placeholder: "Pregunta", value: "this.props.valueQuestion", ref: function (ref) {
 					return _this.questionInput = ref;
 				} }),
 			React.createElement(
@@ -395,7 +395,7 @@ var Quiz = React.createClass({
 				null,
 				" Respuesta: "
 			),
-			React.createElement("input", { id: "answer", placeholder: "Respuesta", value: this.state.valueAnswer, ref: function (ref) {
+			React.createElement("input", { id: "answer", placeholder: "Respuesta", value: "this.props.valueAnswer", ref: function (ref) {
 					return _this.answerInput = ref;
 				} }),
 			React.createElement(
