@@ -25943,7 +25943,7 @@ var Quiz = React.createClass({
 		var _this = this;
 
 		return React.createElement(
-			"div",
+			"form",
 			null,
 			React.createElement(
 				"label",
@@ -25963,7 +25963,7 @@ var Quiz = React.createClass({
 				} }),
 			React.createElement(
 				"button",
-				{ onClick: this.addQuestionClick },
+				{ type: "reset", onClick: this.addQuestionClick },
 				" Añadir Quiz "
 			)
 		);
@@ -26079,9 +26079,7 @@ QuizDispatcher.register(function (payload) {
 			// Eliminamos el elemento seleccionado.
 			quizExam.splice(payload.id.target.id - 1, 1);
 
-			console.log("ARRAY UNA VEZ ELIMINADO:");
-			console.log(quizExam);
-
+			// Si ya no quedan mas preguntas, ocultamos la tabla.
 			if (quizExam.length === 0) {
 				tableIsVisible = false;
 			}
