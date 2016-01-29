@@ -3,21 +3,35 @@ const EventEmitter = require('events').EventEmitter;
 var QuizDispatcher = require('../dispatchers/QuizDispatcher');
 var Constants = require('../constants/QuizConstants');
 
-var valueQuestion = "";
-var valueAnswer = "";
+// Variable para manejar las propiedades de la Cabecera.
 var numberOfQuizes = 0;
+
+// Habilitamos la vista de la tabla cuando se cree el primer elemento.
+var tableIsVisible = false;
+
+// Variable para manejar las preguntas y respuestas.
+var quizExam = [[]];
+
+
+/**
+ * Funcion auxiliar para añadir la pregunta y respuesta al quiz.
+ * Para ello pasamos como atributos (parametros) el texto de la pregunta y de la respuesta y el numero de la pregunta.
+ */
+function create(question, answer) {
+	quizExam.push([question, answer]);
+}
 
 
 var QuizStore = Object.assign({}, EventEmitter.prototype, {
 
-	getStateQuestion: function () {
-		return valueQuestion;
-	},
-	getStateAnswer: function () {
-		return valueAnswer;
-	},
 	getNumberOfQuizes: function () {
 		return numberOfQuizes;
+	},
+	getQuizExam: function () {
+		return quizExam;
+	},
+	getTableIsVisible: function () {
+		return tableIsVisible;
 	},
 	addChangeListener(callback) {
 		this.on(Constants.CHANGE_EVENT, callback);
@@ -30,25 +44,48 @@ var QuizStore = Object.assign({}, EventEmitter.prototype, {
 	}
 });
 
+
 QuizDispatcher.register(function (payload) {
 
 	switch (payload.type) {
 
 		case Constants.ActionTypes.ADD_QUIZ:
-			
-			console.log("PREGUNTA:");
-			console.log(payload.question);
 
-			console.log("RESPUESTA:");
-			console.log(payload.answer);
-
-			// Entre medias tenemos que poner estos valores en una tabla...
-
+			// Traza para ver que entramos en el caso de crear.
+			console.log("CREAR");
 
 			// Actualizamos el numero de preguntas y reseteamos los inputs.
 			numberOfQuizes = numberOfQuizes + 1;
-			valueQuestion = "";
-			valueAnswer = "";
+
+			// Hacemos visible la tabla.
+			tableIsVisible = true;
+
+			// Añadimos la pregunta y la respuesta al quizesay.
+			create(payload.question, payload.answer);
+
+			// Eliminamos el primer elemento del array ya que no tiene longitud.
+			if(quizExam[0].length === 0){
+				quizExam.shift();
+			}
+
+			// Emitimos el cambio y paramos el switch case.
+			QuizStore.emitChange();
+			break;
+
+
+		case Constants.ActionTypes.DELETE_QUIZ:
+
+			// Traza para ver que entramos en el caso de eliminar.
+			console.log("ELIMINAR");
+
+			// Eliminamos el elemento seleccionado.
+			quizExam.splice(payload.id.target.id -1, 1);
+
+			console.log("ARRAY UNA VEZ ELIMINADO:");
+			console.log(quizExam);
+
+			// Actualizamos el numero de preguntas.
+			numberOfQuizes = numberOfQuizes - 1;
 
 			QuizStore.emitChange();
 			break;

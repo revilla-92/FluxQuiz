@@ -1,4 +1,5 @@
 const Quiz = require('./Quiz.jsx');
+const Exam = require('./Exam.jsx');
 const Cabecera = require('./Cabecera.jsx');
 
 var QuizActions = require('../actions/QuizActions');
@@ -7,12 +8,11 @@ var QuizStore = require('../stores/QuizStores');
 
 function getAppStateFromStore() {
 	return {
+		tableIsVisible: QuizStore.getTableIsVisible(), 
 		numQuizes: 		QuizStore.getNumberOfQuizes(),
-		valueQuestion: 	QuizStore.getStateQuestion(),
-		valueAnswer: 	QuizStore.getStateAnswer()		
+		quizExam: 		QuizStore.getQuizExam()
 	};
 }
-
 
 var App = React.createClass({
 	getInitialState: function(){
@@ -29,14 +29,11 @@ var App = React.createClass({
 	},
 	render: function(){
 
-		var valueQuestion = QuizStore.getStateQuestion();
-		var valueAnswer = QuizStore.getStateAnswer();
-		var numQuizes = QuizStore.getNumberOfQuizes();
-
 		return (
 			<div>
-				<Cabecera numQuizes={numQuizes} />
-				<Quiz valueQuestion={valueQuestion} valueAnswer={valueAnswer} />
+				<Cabecera numQuizes={this.state.numQuizes} />
+				<Quiz />
+				<Exam quizExam={this.state.quizExam} tableIsVisible={this.state.tableIsVisible} />
 			</div>
 		)
 	}

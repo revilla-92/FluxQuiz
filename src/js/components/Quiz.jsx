@@ -8,10 +8,10 @@ var Quiz = React.createClass({
 		return (
 			<div>
 				<label> Pregunta: </label>
-				<input id="pregunta" placeholder="Pregunta" value={"this.props.valueQuestion"} ref={(ref) => this.questionInput = ref} />
+				<input id="pregunta" placeholder="Pregunta" ref={(ref) => this.questionInput = ref} />
 
 				<label> Respuesta: </label>
-				<input id="answer" placeholder="Respuesta" value={"this.props.valueAnswer"} ref={(ref) => this.answerInput = ref} />
+				<input id="answer" placeholder="Respuesta" ref={(ref) => this.answerInput = ref} />
 
 				<button onClick={this.addQuestionClick}> Añadir Quiz </button>
 			</div>

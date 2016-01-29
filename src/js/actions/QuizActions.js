@@ -8,5 +8,11 @@ module.exports = {
 			question :question,
 			answer :answer
 		});
+	},
+	delete_Quiz: function(id) {
+		QuizDispatcher.dispatch({
+			type : Constants.ActionTypes.DELETE_QUIZ, 
+			id : id
+		});
 	}
 };
