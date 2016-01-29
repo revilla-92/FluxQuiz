@@ -26082,6 +26082,11 @@ QuizDispatcher.register(function (payload) {
 			console.log("ARRAY UNA VEZ ELIMINADO:");
 			console.log(quizExam);
 
+			console.log("LONGITUD ARRAY:");
+			if (quizExam.length === 0) {
+				tableIsVisible = false;
+			}
+
 			// Actualizamos el numero de preguntas.
 			numberOfQuizes = numberOfQuizes - 1;
 
