@@ -216,13 +216,18 @@ th{
 #noQuiz{
 	clear: both;
 	float: left;
-	font-size: 5px;
+}
+
+#numberQuiz{
+	text-align: center;
 }
 
 #formUploadQuizes{
 	width: 100%;
 	float: left;
+	text-align: center;
 	margin-top: 20px;
+	margin-bottom: 40px;
 }
 
 
