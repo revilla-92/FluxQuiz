@@ -8,13 +8,17 @@ var Quiz = React.createClass({
 
 		return (
 			<form>
-				<label> Pregunta: </label>
-				<input id="pregunta" placeholder="Pregunta" ref={(ref) => this.questionInput = ref} />
+				<div id="pregunta_quiz" >
+					<label> Pregunta: </label>
+					<input id="pregunta" placeholder="Pregunta" ref={(ref) => this.questionInput = ref} />
+				</div>
 
-				<label> Respuesta: </label>
-				<input id="answer" placeholder="Respuesta" ref={(ref) => this.answerInput = ref} />
+				<div id="respuesta_quiz" >
+					<label> Respuesta: </label>
+					<input id="answer" placeholder="Respuesta" ref={(ref) => this.answerInput = ref} />
+				</div>
 
-				<button type="reset" onClick={this.addQuestionClick}> Añadir Quiz </button>
+				<button id="botonAddQuiz" type="reset" onClick={this.addQuestionClick}> Crear Quiz </button>
 			</form>
 		)
 	}

@@ -1,8 +1,16 @@
 var Cabecera = React.createClass({
 	render: function(){
-		return (
-			<label> Numero de preguntas realizadas: {this.props.numQuizes} </label>
-		)
+		
+		if(this.props.numQuizes === 0){
+			return (
+				<p> </p>
+			)
+		}else{
+			return(
+				<p id="numberQuiz"> Numero de preguntas realizadas: {this.props.numQuizes} </p>
+			)
+			
+		}
 	}
 });
 

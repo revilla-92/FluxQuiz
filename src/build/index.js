@@ -25796,7 +25796,7 @@ var App = React.createClass({
 			null,
 			React.createElement(Cabecera, { numQuizes: this.state.numQuizes }),
 			React.createElement(Quiz, null),
-			React.createElement(Exam, { quizExam: this.state.quizExam, tableIsVisible: this.state.tableIsVisible })
+			React.createElement(Exam, { quizExam: this.state.quizExam, tableIsVisible: this.state.tableIsVisible, numQuizes: this.state.numQuizes })
 		);
 	}
 });
@@ -25810,13 +25810,22 @@ var Cabecera = React.createClass({
 	displayName: "Cabecera",
 
 	render: function render() {
-		return React.createElement(
-			"label",
-			null,
-			" Numero de preguntas realizadas: ",
-			this.props.numQuizes,
-			" "
-		);
+
+		if (this.props.numQuizes === 0) {
+			return React.createElement(
+				"p",
+				null,
+				" "
+			);
+		} else {
+			return React.createElement(
+				"p",
+				{ id: "numberQuiz" },
+				" Numero de preguntas realizadas: ",
+				this.props.numQuizes,
+				" "
+			);
+		}
 	}
 });
 
@@ -25845,81 +25854,92 @@ var Exam = React.createClass({
 		if (this.props.tableIsVisible) {
 
 			return React.createElement(
-				_fixedDataTable.Table,
-				{ rowHeight: 50, rowsCount: rows.length, width: 1200, height: 600, headerHeight: 50 },
-				React.createElement(_fixedDataTable.Column, {
-					header: React.createElement(
-						_fixedDataTable.Cell,
-						null,
-						' Numero Pregunta '
-					),
-					cell: function (_ref) {
-						var rowIndex = _ref.rowIndex;
-						return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					_fixedDataTable.Table,
+					{ id: 'tabla_Quiz', rowHeight: 50, rowsCount: rows.length, width: 1200, height: 600, headerHeight: 50 },
+					React.createElement(_fixedDataTable.Column, {
+						header: React.createElement(
 							_fixedDataTable.Cell,
 							null,
-							rowIndex + 1
-						);
-					},
-					width: 100
-				}),
-				React.createElement(_fixedDataTable.Column, {
-					header: React.createElement(
-						_fixedDataTable.Cell,
-						null,
-						' Pregunta '
-					),
-					cell: function (_ref2) {
-						var rowIndex = _ref2.rowIndex;
-						return React.createElement(
+							' Numero Pregunta '
+						),
+						cell: function (_ref) {
+							var rowIndex = _ref.rowIndex;
+							return React.createElement(
+								_fixedDataTable.Cell,
+								null,
+								rowIndex + 1
+							);
+						},
+						width: 100
+					}),
+					React.createElement(_fixedDataTable.Column, {
+						header: React.createElement(
 							_fixedDataTable.Cell,
 							null,
-							rows[rowIndex][0]
-						);
-					},
-					width: 500
-				}),
-				React.createElement(_fixedDataTable.Column, {
-					header: React.createElement(
-						_fixedDataTable.Cell,
-						null,
-						' Respuesta '
-					),
-					cell: function (_ref3) {
-						var rowIndex = _ref3.rowIndex;
-						return React.createElement(
+							' Pregunta '
+						),
+						cell: function (_ref2) {
+							var rowIndex = _ref2.rowIndex;
+							return React.createElement(
+								_fixedDataTable.Cell,
+								null,
+								rows[rowIndex][0]
+							);
+						},
+						width: 500
+					}),
+					React.createElement(_fixedDataTable.Column, {
+						header: React.createElement(
 							_fixedDataTable.Cell,
 							null,
-							rows[rowIndex][1]
-						);
-					},
-					width: 500
-				}),
-				React.createElement(_fixedDataTable.Column, {
-					header: React.createElement(
-						_fixedDataTable.Cell,
-						null,
-						' Eliminar '
-					),
-					cell: function (_ref4) {
-						var rowIndex = _ref4.rowIndex;
-						return React.createElement(
+							' Respuesta '
+						),
+						cell: function (_ref3) {
+							var rowIndex = _ref3.rowIndex;
+							return React.createElement(
+								_fixedDataTable.Cell,
+								null,
+								rows[rowIndex][1]
+							);
+						},
+						width: 500
+					}),
+					React.createElement(_fixedDataTable.Column, {
+						header: React.createElement(
 							_fixedDataTable.Cell,
 							null,
-							React.createElement(
-								'button',
-								{ id: rowIndex + 1, onClick: _this.deleteQuestionClick },
-								' Eliminar Quiz '
-							)
-						);
-					},
-					width: 100
-				})
+							' Eliminar '
+						),
+						cell: function (_ref4) {
+							var rowIndex = _ref4.rowIndex;
+							return React.createElement(
+								_fixedDataTable.Cell,
+								null,
+								React.createElement(
+									'button',
+									{ id: rowIndex + 1, onClick: _this.deleteQuestionClick },
+									' Eliminar Quiz '
+								)
+							);
+						},
+						width: 100
+					})
+				),
+				React.createElement(
+					'form',
+					{ id: 'formUploadQuizes', method: 'POST', action: '/quizes/new' },
+					React.createElement('input', { type: 'hidden', name: 'quizes', value: this.props.quizExam }),
+					React.createElement('input', { type: 'hidden', name: 'numQuizes', value: this.props.numQuizes }),
+					React.createElement('input', { name: 'commit', type: 'submit', value: 'Añadir Quizes' })
+				)
 			);
 		} else {
 			return React.createElement(
-				'label',
-				null,
+				'p',
+				{ id: 'noQuiz' },
 				' Aun no hay quizes creados. '
 			);
 		}
@@ -25946,25 +25966,33 @@ var Quiz = React.createClass({
 			"form",
 			null,
 			React.createElement(
-				"label",
-				null,
-				" Pregunta: "
+				"div",
+				{ id: "pregunta_quiz" },
+				React.createElement(
+					"label",
+					null,
+					" Pregunta: "
+				),
+				React.createElement("input", { id: "pregunta", placeholder: "Pregunta", ref: function (ref) {
+						return _this.questionInput = ref;
+					} })
 			),
-			React.createElement("input", { id: "pregunta", placeholder: "Pregunta", ref: function (ref) {
-					return _this.questionInput = ref;
-				} }),
 			React.createElement(
-				"label",
-				null,
-				" Respuesta: "
+				"div",
+				{ id: "respuesta_quiz" },
+				React.createElement(
+					"label",
+					null,
+					" Respuesta: "
+				),
+				React.createElement("input", { id: "answer", placeholder: "Respuesta", ref: function (ref) {
+						return _this.answerInput = ref;
+					} })
 			),
-			React.createElement("input", { id: "answer", placeholder: "Respuesta", ref: function (ref) {
-					return _this.answerInput = ref;
-				} }),
 			React.createElement(
 				"button",
-				{ type: "reset", onClick: this.addQuestionClick },
-				" Añadir Quiz "
+				{ id: "botonAddQuiz", type: "reset", onClick: this.addQuestionClick },
+				" Crear Quiz "
 			)
 		);
 	}
